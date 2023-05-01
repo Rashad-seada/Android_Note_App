@@ -2,6 +2,7 @@ package com.example.noteapp.features.note.presentation.note
 
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.noteapp.features.note.domain.models.Note
@@ -47,10 +49,9 @@ fun AddEditNoteScreen(
     val scope = rememberCoroutineScope()
 
 
-    LaunchedEffect(key1 = true){
-        viewModel.eventFlow.collectLatest {
-            event->
-            when(event){
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
                 is AddEditNoteViewModel.UiEvent.ShowSnakeBar -> {
                     snackBarHostState.showSnackbar(
                         message = event.message,
@@ -84,25 +85,22 @@ fun AddEditNoteScreen(
                 .background(noteBackgroundColor.value)
                 .padding(16.dp)
         ) {
+            
+            Spacer(modifier = Modifier.height(15.dp))
 
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp),
+                    .height(40.dp)
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 items(Note.noteColors) {
 
-                    Box(
+                    Surface(
                         modifier = Modifier
-                            .size(30.dp)
-                            .background(color = it, shape = CircleShape)
-                            .shadow(15.dp, CircleShape)
-                            .border(
-                                width = 3.dp,
-                                color = if (viewModel.noteSelectedColor.value == it.toArgb()) Color.Black else Color.Transparent
-                            )
+                            .size(40.dp)
                             .clickable {
                                 scope.launch {
                                     noteBackgroundColor.animateTo(
@@ -114,7 +112,14 @@ fun AddEditNoteScreen(
                                 }
 
                                 viewModel.onEvent(AddEditNoteEvent.ChangeColor(it.toArgb()))
-                            }
+                            },
+                        color = it,
+                        shape = CircleShape,
+                        border = BorderStroke(
+                            width = 3.dp,
+                            color = if (viewModel.noteSelectedColor.value == it.toArgb()) Color.Black else Color.Transparent
+                        ),
+                        shadowElevation = 5.dp
                     ) {
 
                     }
@@ -125,14 +130,15 @@ fun AddEditNoteScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             CustomTextField(
-                modifier = Modifier.height(50.dp),
+                modifier = Modifier.height(65.dp),
                 value = titleState.value,
                 onValueChange = {
                     titleState.value = it
                     println(">>>>>>>>>>>. ${titleState}")
                 },
                 maxLines = 2,
-                hint = "Enter your note title",
+                hint = "Enter Title",
+                fontSize = 30.sp
             )
 
             CustomTextField(
@@ -144,7 +150,9 @@ fun AddEditNoteScreen(
 
                 },
                 maxLines = 10,
-                hint = "Enter your note"
+                hint = "Enter your note",
+                fontSize = 15.sp
+
             )
 
 

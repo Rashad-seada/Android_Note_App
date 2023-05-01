@@ -1,9 +1,6 @@
 package com.example.noteapp.features.note.presentation.note
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,6 +32,17 @@ fun NotesScreen(
     val state = viewModel.state.value
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val animatedHeight = remember {
+        androidx.compose.animation.core.Animatable(
+            0f
+        )
+    }
+
+    LaunchedEffect(key1 = state.isOrderSectionVisible,){
+        animatedHeight.animateTo(if (state.isOrderSectionVisible) 25f else 0f)
+    }
+
+
 
     LaunchedEffect(key1 = true ){
         viewModel.onEvent(NotesEvent.GetNotes)
@@ -57,8 +65,12 @@ fun NotesScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 15.dp, vertical = 25.dp)
+                .padding(horizontal = 15.dp,)
         ) {
+            item {
+                Spacer(modifier = Modifier.height(25.dp))
+            }
+
             item {
 
                 Row(
@@ -91,10 +103,11 @@ fun NotesScreen(
             }
 
             item {
+
                 AnimatedVisibility(
                     visible = state.isOrderSectionVisible,
                     enter = fadeIn() + slideInVertically(),
-                    exit = fadeOut()
+                    exit = fadeOut() + slideOutVertically()
                 ) {
                     OrderSection(
                         noteOrder = state.notesOrder,
@@ -106,7 +119,7 @@ fun NotesScreen(
             }
 
             item {
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(animatedHeight.value.dp))
             }
 
 
@@ -134,11 +147,14 @@ fun NotesScreen(
                             navController.navigate(Screen.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
                         }
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
 
                 }
             }
 
+            item {
+                Spacer(modifier = Modifier.height(50.dp))
+            }
 
         }
     }

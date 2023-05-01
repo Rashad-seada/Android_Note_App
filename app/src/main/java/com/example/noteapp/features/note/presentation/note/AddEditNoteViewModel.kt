@@ -1,20 +1,16 @@
 package com.example.noteapp.features.note.presentation.note
 
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteapp.features.note.domain.models.Note
 import com.example.noteapp.features.note.domain.usecase.NoteUsecases
-import com.example.notes.features.note_feature.domain.usecase.AddNoteUsecase
 import com.example.notes.features.note_feature.domain.usecase.InvalidNoteException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -34,7 +34,7 @@ fun NoteCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(
-                vertical = 10.dp,
+                vertical = 5.dp,
                 horizontal = 10.dp
             ),
         color = Color(note.color),
@@ -43,38 +43,59 @@ fun NoteCard(
     ) {
 
         Column(
-            modifier = Modifier.fillMaxSize().clickable {
-                onClick()
-            }.padding(horizontal = 10.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    onClick()
+                }
+                .padding(horizontal = 20.dp, vertical = 10.dp)
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = note.title,
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.surface,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = note.content,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.surface,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 10,
             )
 
-            IconButton(
-                onClick = {
-                          onDeleteClick()
-                },
-                modifier = Modifier
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                    ){
+
+                Text(
+                    text = note.timeStamp,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.surface,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 10,
                 )
+
+                IconButton(
+                    onClick = {
+                        onDeleteClick()
+                    },
+                    modifier = Modifier
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = Color.Black
+                    )
+                }
+
+
             }
         }
     }
